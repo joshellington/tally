@@ -1,5 +1,5 @@
 {
-  "name": "demo",
+  "name": "tally-js",
   "version": "1.0.0",
   "description": "",
   "main": "tally.js",
@@ -8,8 +8,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "beforeunload-request": "^1.0.1"
-  }
+  "license": "ISC"
 }

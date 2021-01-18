@@ -5,8 +5,6 @@
   </head>
   <body>
     <div id="tally"></div>
-
-    <!-- <script type="module" src="tally.js"></script> -->
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"
       integrity="sha512-PQsdzDthPKtp230uD7lunTQw6CwNTPnd5LP3e3/+afg9cNkrL7UsfWXT3EW5Ar9XZ5SdADcPDXs1BAWNa9OZ7Q=="
@@ -17,13 +15,20 @@
 
     <script type="module">
       import Tally from "./tally.js";
-      new Tally()
 
       const tallyContainer = document.querySelector("#tally");
 
+      new Tally({
+        id: 13,
+        interval: 1000,
+        change: (count) => {
+          tallyContainer.innerText = count;
+        },
+      });
+
       window.addEventListener("tally", (e) => {
         // console.log(e);
-        tallyContainer.innerText = e.detail;
+        // tallyContainer.innerText = e.detail.count;
       })
     </script>
   </body>

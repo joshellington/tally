@@ -94,8 +94,8 @@ functions:
     handler: handler.remove
     events:
       - http:
-          path: /{id}
-          method: delete
+          path: /{id}/remove
+          method: post
           cors: true
           request:
             parameters:
@@ -103,9 +103,9 @@ functions:
                 id: true
 
 # you can add CloudFormation resource templates here
-resources:
- Resources:
-   NewResource:
-     Type: AWS::S3::Bucket
-     Properties:
-       BucketName: tally-data
+# resources:
+#  Resources:
+#    NewResource:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: tally-data
