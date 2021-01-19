@@ -82,7 +82,7 @@
     <main>
       <section>
         <h1>Tally</h1>
-        <h2>Lofi, real-time visitor counter service</h2>
+        <h2>Lofi, real-time visitor counter</h2>
       </section>
 
       <section>
@@ -116,9 +116,10 @@ const tally = new Tally({
   }
 })</pre>
         <br><br>
-        <p>Two ways to subscribe to count updates:</p>
+        <p>You can subscribe to window events:</p>
         <pre>window.addEventListener("tally", (e) => { console.log(e.detail.count) }</pre>
         <br><br>
+        <p>Or directly from the class instantiation:</p>
         <pre>
 new Tally({
   change: (data) => {
