@@ -1,3 +1,5 @@
+import md5 from "../node_modules/blueimp-md5/js/md5";
+
 function iOS() {
   return (
     [
@@ -16,21 +18,32 @@ function iOS() {
 class Tally {
   constructor(options) {
     this.options = options;
-    this.baseUrl = `https://djysg7o0wl.execute-api.us-west-2.amazonaws.com/dev`;
+    this.baseUrl = this.options.apiUrl
+      ? this.options.apiUrl
+      : `https://djysg7o0wl.execute-api.us-west-2.amazonaws.com/dev`;
     this.id = this.options.id
-      ? CryptoJS.MD5(
-          window.location.href + this.options.id.toString()
-        ).toString()
-      : CryptoJS.MD5(window.location.href).toString();
+      ? md5(window.location.href + this.options.id.toString()).toString()
+      : md5(window.location.href).toString();
+
+    this.status = 0;
     this.count = 0;
     this.counted = false;
+    this.interval = null;
 
     console.log(`TALLY`, this.baseUrl, this.id);
 
-    window.addEventListener("load", this.add.bind(this));
+    window.addEventListener("load", (e) => {
+      console.log(`LOAD`);
+      this.add();
+    });
 
     window.addEventListener("beforeunload", async (e) => {
       console.log(`BEFOREUNLOAD`);
+      this.unload();
+    });
+
+    window.addEventListener("unload", async (e) => {
+      console.log(`UNLOAD`);
       this.unload();
     });
 
@@ -63,13 +76,18 @@ class Tally {
   }
 
   async init() {
-    setInterval(
-      async () => {
-        this.count = await this.get();
-        this.dispatch();
-      },
-      this.options.interval ? this.options.interval : 1000
-    );
+    if (this.status === 0) {
+      await this.get();
+
+      this.interval = setInterval(
+        async () => {
+          await this.get();
+        },
+        this.options.interval ? this.options.interval : 1000
+      );
+
+      this.status = 1;
+    }
   }
 
   dispatch() {
@@ -77,19 +95,26 @@ class Tally {
     window.dispatchEvent(event);
 
     if (this.options.change) {
-      this.options.change(this.count);
+      this.options.change({
+        count: this.count,
+        status: this.status,
+        counted: this.counted,
+      });
     }
   }
 
   async get() {
     console.log(`GET`);
     let res = await fetch(`${this.baseUrl}/${this.id}`);
-    return await res.text();
+    this.count = await res.text();
+    this.dispatch();
+
+    return this.count;
   }
 
   async add() {
     if (!this.counted) {
-      console.log(`ADD`);
+      console.log(`ADD BEACON`);
       this.counted = true;
       navigator.sendBeacon(`${this.baseUrl}/${this.id}`);
     }
@@ -97,9 +122,16 @@ class Tally {
 
   unload() {
     if (this.counted) {
-      console.log(`UNLOAD`);
+      console.log(`UNLOAD BEACON`);
       this.counted = false;
       navigator.sendBeacon(`${this.baseUrl}/${this.id}/remove`);
+    }
+  }
+
+  destroy() {
+    if (this.status === 1) {
+      clearInterval(this.interval);
+      this.status = 0;
     }
   }
 }
