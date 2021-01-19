@@ -6,9 +6,11 @@ A lofi "real-time" visitor counter for webpages and the like.
 
 Setup for Serverless Framework and AWS Lambda. Only requires a single S3 bucket.
 
-## Frontend
+## Browser
 
-Current working demo is in `frontend/demo/`. Recommend firing up [localtunnel.me](https://theboroer.github.io/localtunnel-www/) or something similar for easy testing.
+Current working demo is in `browser/`. To start the demo: `npm run dev`
+
+Recommend firing up [localtunnel.me](https://theboroer.github.io/localtunnel-www/) or something similar for easy testing across devices.
 
 *Note, currently pointed to my personal Lambda stack*
 
