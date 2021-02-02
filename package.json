@@ -1,23 +1,29 @@
 {
-  "name": "tally",
+  "name": "tally-js",
   "version": "1.0.0",
-  "description": "",
-  "main": "handler.js",
+  "main": "dist/tally.js",
+  "source": "src/tally.js",
+  "exports": "dist/tally.modern.js",
+  "module": "dist/tally.module.js",
+  "unpkg": "dist/tally.umd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "offline": "nodemon --exec serverless offline --host 0.0.0.0 start -e js",
-    "offline:debug": "nodemon --exec SLS_DEBUG=* serverless offline --host 0.0.0.0 start -e js"
+    "build": "microbundle",
+    "dev": "microbundle watch & http-server . & wait"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.828.0",
-    "md5": "^2.3.0",
-    "serverless": "^2.19.0"
+    "blueimp-md5": "^2.18.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7",
-    "serverless-dotenv-plugin": "^3.1.0",
-    "serverless-offline": "^6.8.0"
-  }
+    "http-server": "^0.12.3",
+    "microbundle": "^0.13.0"
+  },
+  "description": "Lofi real-time visitor count",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshellington/tally.git"
+  },
+  "homepage": "https://github.com/joshellington/tally",
+  "keywords": [],
+  "author": "Josh Ellington",
+  "license": "ISC"
 }

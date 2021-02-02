@@ -75,6 +75,8 @@
         margin: 0;
         font-size: 16px;
         font-family: 'Roboto Mono';
+        max-width: calc(100% - 30px);
+        overflow: auto;
       }
     </style>
   </head>
@@ -91,11 +93,6 @@
           <span class="label"></span>
         </div>
       </section>
-      
-      <!-- <div>
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-      </div> -->
 
       <section class="docs">
         <h2>How to use</h2>
@@ -108,16 +105,15 @@
         <p>Instantiate the Tally class and configure options:</p>
         <pre>
 const tally = new Tally({
-  apiUrl: "",           // required
   id: 987,              // optional, default: null, used for SPAs/non-unique URLs
-  interval: 1000,       // optional, default: 1000, how often to poll for latest stats
+  interval: 1000,       // optional, default: 1000, how often to poll for latest count
   change: (data) => {   // optional, default: null, callback when count is updated
-    alert(data.count)   // {count: int, status: int, counted: boolean}
+    alert(data.count)   // {count: int, running: boolean}
   }
 })</pre>
         <br><br>
         <p>You can subscribe to window events:</p>
-        <pre>window.addEventListener("tally", (e) => { console.log(e.detail.count) }</pre>
+        <pre>window.addEventListener("tally.change", (e) => { console.log(e.detail.count) }</pre>
         <br><br>
         <p>Or directly from the class instantiation:</p>
         <pre>
@@ -137,8 +133,8 @@ new Tally({
 
       const tallyContainer = document.querySelector(".tally");
 
-      const tally = new Tally({
-        id: 16,
+      window.tally = new Tally({
+        id: 9998918982,
         interval: 1000,
         change: (data) => {
           tallyContainer.querySelector('span.count').innerText = data.count;
@@ -146,18 +142,10 @@ new Tally({
         },
       });
 
-      window.addEventListener("tally", (e) => {
+      window.addEventListener("tally.change", (e) => {
         // console.log(e);
         // tallyContainer.innerText = e.detail.count;
       });
-
-      // document.querySelector("#start").addEventListener("click", (e) => {
-      //   tally.init();
-      // });
-
-      // document.querySelector("#stop").addEventListener("click", (e) => {
-      //   tally.destroy();
-      // });
     </script>
   </body>
 </html>
